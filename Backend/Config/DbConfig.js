@@ -2,8 +2,6 @@ const mongoose = require('mongoose')
 const createAdminAuto = require('../Utils/createAdminAuto')
 const createAutoRole = require('../Utils/creatAutoRole')
 
-
-
 const connectDb = async () => {
     try {
         const conn = await mongoose.connect(process.env.MONGO_URL)
