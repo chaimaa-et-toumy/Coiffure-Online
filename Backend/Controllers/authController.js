@@ -1,9 +1,11 @@
 const User = require('../Models/UserModel');
 const Role = require('../Models/roleUserModel');
 const generateToken = require('../Utils/generateToken');
+const { sendEmail, forgetPassword } = require('../Utils/sendEmail')
 const bycrpt = require('bcryptjs')
 const crypto = require('crypto')
 let ls = require('local-storage');
+const jwt = require('jsonwebtoken')
 
 
 
@@ -24,7 +26,7 @@ const Login = async (req, res) => {
             if (!isMatch) {
                 res.status(400).send("Invalid credentials")
             }
-            if (user.isVerifed) {
+            else if (user.isVerifed) {
                 let token = generateToken(user._id, user.email, user.name)
                 ls('token', token)
                 res.status(200).json({
@@ -45,6 +47,9 @@ const Login = async (req, res) => {
     }
 }
 
+// method : post
+// url : api/auth/register
+// acces : Public
 const Register = async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -74,11 +79,13 @@ const Register = async (req, res) => {
             isVerifed: false,
             role: roles._id
         })
+        await sendEmail(req, user_, res)
         if (user_) {
             res.status(201).json({
-                name: user_.name,
+                _id: user_._id,
+                name: user_.username,
                 email: user_.email,
-                role: user_.role,
+                role: user_.role.role
             })
         }
     } catch (err) {
@@ -87,8 +94,108 @@ const Register = async (req, res) => {
     }
 }
 
+//method : post
+// url : api/auth/forgetPassword
+// acces : Public
+const ForgetPassword = async (req, res) => {
+    const { email } = req.body
+    if (!email) {
+        res.status(400).send("email is required")
+    }
+    try {
+        const user = await User.findOne({ email })
+        if (user) {
+            await forgetPassword(req, user, res)
+            res.status(200).json({
+                _id: user.id,
+                email: user.email,
+                etoken: jwt.sign({ _id: user.id }, process.env.JWT_SECRET, { expiresIn: '10m' }),
+                msg: res.err
+            })
+        }
+        else {
+            res.status(404).send("user not found")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+// method : post
+// url : api/auth/resetpassword
+// acces : public
+
+const resetpassword = async (req, res) => {
+    const password = req.body.password
+    let token = req.params.token
+    const salt = await bycrpt.genSalt(10)
+
+    if (!password) {
+        res.status(400).send("password is required")
+    }
+
+    try {
+        const user = await User.findOne({ eToken: token })
+        if (!user) {
+            res.status(404).send("user not found")
+        }
+        if (user.isReset === true) {
+            user.password = await bycrpt.hash(password, salt)
+            res.status(200).send("password is reset")
+            await user.save()
+        }
+        else {
+            res.status(400).send("password is not reset")
+        }
+    } catch (err) {
+        console.log(err.message)
+    }
+}
+
+
+//function to reset password
+const verify_email_rest = async (req, res) => {
+    try {
+        let token = req.params.token
+        const user = await User.findOne({ eToken: token })
+        if (user) {
+            user.isReset = true
+            await user.save()
+            res.status(200).send("password is verified")
+        }
+        else {
+            res.send("password is not verified")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//function to verify email
+const verify_email = async (req, res) => {
+    try {
+        const token = req.params.token
+        const user = await User.findOne({ eToken: token })
+        if (user) {
+            user.isVerifed = true
+            await user.save()
+            console.log("email is verified")
+        }
+        else {
+            console.log("email is not verified")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 module.exports = {
     Login,
     Register,
+    ForgetPassword,
+    verify_email_rest,
+    verify_email,
+    resetpassword
 }
