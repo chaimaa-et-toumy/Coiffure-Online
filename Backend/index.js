@@ -3,7 +3,6 @@ const express = require('express')
 const router = require('./Routes/authRoute')
 const connectDb = require('./Config/DbConfig')
 const cors = require('cors')
-
 connectDb()
 
 const app = express()

@@ -7,8 +7,6 @@ const crypto = require('crypto')
 let ls = require('local-storage');
 const jwt = require('jsonwebtoken')
 
-
-
 // method : post
 // url : api/auth/login
 // acces : Public
@@ -21,26 +19,24 @@ const Login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email }).populate("role")
-        const isMatch = await bycrpt.compare(password, user.password)
-        if (user) {
-            if (!isMatch) {
-                res.status(400).send("Invalid credentials")
-            }
-            else if (user.isVerifed) {
-                let token = generateToken(user._id, user.email, user.name)
-                ls('token', token)
-                res.status(200).json({
-                    _id: user._id,
-                    name: user.name,
-                    email: user.email,
-                    role: user.role.role,
-                    token: token
-                })
-            } else {
-                res.status(401).send("first verify your email address to login")
-            }
-        } else {
+        if (!user) {
             res.status(404).send("User not found")
+            return;
+        }
+        const isMatch = await bycrpt.compare(password, user.password)
+        if (!isMatch) {
+            res.status(400).send("Invalid credentials")
+        }
+        else if (user.isVerifed) {
+            let token = generateToken(user._id, user.email, user.name)
+            ls('token', token)
+            res.status(200).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                token: token
+            })
         }
     } catch (err) {
         console.error(err);
@@ -121,11 +117,9 @@ const ForgetPassword = async (req, res) => {
     }
 }
 
-
 // method : post
 // url : api/auth/resetpassword
 // acces : public
-
 const resetpassword = async (req, res) => {
     const password = req.body.password
     let token = req.params.token
@@ -153,7 +147,6 @@ const resetpassword = async (req, res) => {
     }
 }
 
-
 //function to reset password
 const verify_email_rest = async (req, res) => {
     try {
@@ -162,7 +155,7 @@ const verify_email_rest = async (req, res) => {
         if (user) {
             user.isReset = true
             await user.save()
-            res.status(200).send("password is verified")
+            res.redirect(`http://localhost:3000/resetpassword/${token}`)
         }
         else {
             res.send("password is not verified")
@@ -189,7 +182,6 @@ const verify_email = async (req, res) => {
         console.log(error)
     }
 }
-
 
 module.exports = {
     Login,
