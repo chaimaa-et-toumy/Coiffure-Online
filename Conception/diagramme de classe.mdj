@@ -1356,6 +1356,23 @@
 										},
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGGpsEUnxJmJE4=",
+											"_parent": {
+												"$ref": "AAAAAAGGnDEB6yQNw/I="
+											},
+											"model": {
+												"$ref": "AAAAAAGGpsEUexJjKZ0="
+											},
+											"font": "Arial;13;0",
+											"left": 549,
+											"top": 85,
+											"width": 134,
+											"height": 13,
+											"text": "+Name: string",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGGnDFikSQ53TM=",
 											"_parent": {
 												"$ref": "AAAAAAGGnDEB6yQNw/I="
@@ -1365,10 +1382,27 @@
 											},
 											"font": "Arial;13;0",
 											"left": 549,
-											"top": 85,
+											"top": 100,
 											"width": 134,
 											"height": 13,
 											"text": "+contenu: string",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGGpsHMNBP+gug=",
+											"_parent": {
+												"$ref": "AAAAAAGGnDEB6yQNw/I="
+											},
+											"model": {
+												"$ref": "AAAAAAGGpsHMJRP7QWY="
+											},
+											"font": "Arial;13;0",
+											"left": 549,
+											"top": 115,
+											"width": 134,
+											"height": 13,
+											"text": "+review: number",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1382,7 +1416,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 549,
-											"top": 100,
+											"top": 130,
 											"width": 134,
 											"height": 13,
 											"text": "+date: date",
@@ -1411,7 +1445,7 @@
 									"left": 544,
 									"top": 65,
 									"width": 144,
-									"height": 53
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -1424,7 +1458,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 544,
-									"top": 118,
+									"top": 148,
 									"width": 144,
 									"height": 10
 								},
@@ -1462,7 +1496,7 @@
 							"left": 544,
 							"top": 40,
 							"width": 144,
-							"height": 97,
+							"height": 118,
 							"nameCompartment": {
 								"$ref": "AAAAAAGGnDEB6yQIDOw="
 							},
@@ -1806,9 +1840,9 @@
 										"$ref": "AAAAAAGGnDJxBCSGshM="
 									},
 									"font": "Arial;13;0",
-									"left": 256,
+									"left": 255,
 									"top": 151,
-									"width": 5.05908203125,
+									"width": 6.5,
 									"height": 13,
 									"alpha": -0.9544721209362308,
 									"distance": 13.45362404707371,
@@ -2140,9 +2174,9 @@
 										"$ref": "AAAAAAGGnDMq5yb3tyA="
 									},
 									"font": "Arial;13;0",
-									"left": 168,
+									"left": 167,
 									"top": 288,
-									"width": 5.05908203125,
+									"width": 6.5,
 									"height": 13,
 									"alpha": -0.6371390158386044,
 									"distance": 12.041594578792296,
@@ -2350,9 +2384,9 @@
 										"$ref": "AAAAAAGGnDO2nCx9l+o="
 									},
 									"font": "Arial;13;0",
-									"left": 246,
+									"left": 245,
 									"top": 354,
-									"width": 5.05908203125,
+									"width": 6.5,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -2626,9 +2660,9 @@
 										"$ref": "AAAAAAGGnDRR9jKmHuc="
 									},
 									"font": "Arial;13;0",
-									"left": 520,
+									"left": 519,
 									"top": 367,
-									"width": 5.05908203125,
+									"width": 6.5,
 									"height": 13,
 									"alpha": 0.1864871505253205,
 									"distance": 19.79898987322333,
@@ -3187,12 +3221,30 @@
 						},
 						{
 							"_type": "UMLAttribute",
+							"_id": "AAAAAAGGpsEUexJjKZ0=",
+							"_parent": {
+								"$ref": "AAAAAAGGnDEB6iQF9sI="
+							},
+							"name": "Name",
+							"type": "string"
+						},
+						{
+							"_type": "UMLAttribute",
 							"_id": "AAAAAAGGnDFihSQ2eA8=",
 							"_parent": {
 								"$ref": "AAAAAAGGnDEB6iQF9sI="
 							},
 							"name": "contenu",
 							"type": "string"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGGpsHMJRP7QWY=",
+							"_parent": {
+								"$ref": "AAAAAAGGnDEB6iQF9sI="
+							},
+							"name": "review",
+							"type": "number"
 						},
 						{
 							"_type": "UMLAttribute",
