@@ -1,37 +1,40 @@
 const moongose = require('mongoose')
 
 const userSchema = moongose.Schema({
-    username : {
-        type : String
+    username: {
+        type: String
     },
-    email : {
-        type : String,
-        required : [true , "please enter a email"],
-        unique : true
+    email: {
+        type: String,
+        required: [true, "please enter a email"],
+        unique: true
     },
-    password : {
-        type : String
+    password: {
+        type: String
     },
-    eToken : {
-        type : String,
+    fullName: {
+        type: String
     },
-    phoneNumber : {
-        type : Number
+    eToken: {
+        type: String,
     },
-    isVerifed : {
-        type : Boolean,
-        default : false
+    phoneNumber: {
+        type: Number
     },
-    isReset : {
-        type : Boolean
+    isVerifed: {
+        type: Boolean,
+        default: false
     },
-    role : {
-        type : moongose.Schema.Types.ObjectId,
-        ref : 'Role'
+    isReset: {
+        type: Boolean
     },
-},{
-    timestamps : true
+    role: {
+        type: moongose.Schema.Types.ObjectId,
+        ref: 'Role'
+    },
+}, {
+    timestamps: true
 })
 
-module.exports = moongose.model('user',userSchema)
+module.exports = moongose.model('user', userSchema)
 
