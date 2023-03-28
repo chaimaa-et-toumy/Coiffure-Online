@@ -1,13 +1,47 @@
-import React, { useState } from "react";
-import Input from "../../../component/input";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function EditCategorie() {
+export default function EditCategorie(props) {
     const [showModal, setShowModal] = useState(false);
+    const [data, setData] = useState({});
+    const [errors, setError] = useState("");
+    const [currentId, setCurrentId] = useState(null);
+
+    function getOneCategorie(id) {
+        axios.get(`http://localhost:8080/api/categorie/getById/${id}`)
+            .then((res) => {
+                setData(res.data);
+                setCurrentId(id)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+
+    const handleChange = (e) => {
+        setData({ ...data, [e.target.name]: e.target.value });
+        console.log(data);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:8080/api/categorie/update/${currentId}`, data)
+            .then((res) => {
+                props.setRefresh(refresh => !refresh)
+                props.message(res.data);
+                setShowModal(false)
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                setError(err.response.data);
+            });
+    }
 
 
     return (
         <>
-            <button onClick={() => setShowModal(true)}>
+            <button onClick={() => { setShowModal(true); getOneCategorie(props.id) }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className="h-6 w-6" x-tooltip="tooltip">
                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -36,14 +70,22 @@ export default function EditCategorie() {
                                     </div>
                                     <div className="relative p-6 flex-auto">
                                         <div className="my-4 text-slate-500 text-lg leading-relaxed">
-                                            <div>
+                                            <form onSubmit={handleSubmit}>
+                                                {
+                                                    errors && (
+                                                        <div className="text-red-600 mb-3 text-sm text-center">{errors}</div>
+                                                    )
+                                                }
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="femme" selected disabled>type de genre</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            value={data.genre}
+                                                            onChange={handleChange}
+                                                            name="genre"
+                                                        >
                                                             <option value="femme">femme</option>
                                                             <option value="homme">homme</option>
-                                                            <option value="les_deux">les deux</option>
+                                                            <option value="tout">tout</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -62,7 +104,7 @@ export default function EditCategorie() {
                                                         Edit
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

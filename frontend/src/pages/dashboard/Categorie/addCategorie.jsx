@@ -1,7 +1,29 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-export default function AddCategorie() {
+export default function AddCategorie(props) {
     const [showModal, setShowModal] = useState(false);
+    const [categorie, setCategorie] = useState({ genre: "" });
+    const [errors, setError] = useState("");
+
+    const handleChange = (e) => {
+        setCategorie({ ...categorie, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:8080/api/categorie/add", categorie)
+            .then((res) => {
+                props.setRefresh(refresh => !refresh)
+                props.message(res.data);
+                setShowModal(false)
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                setError(err.response.data);
+
+            });
+    };
 
     return (
         <>
@@ -36,19 +58,26 @@ export default function AddCategorie() {
                                     </div>
                                     <div className="relative p-6 flex-auto">
                                         <div className="my-4 text-slate-500 text-lg leading-relaxed">
-                                            <div>
-
+                                            <form onSubmit={handleSubmit}>
                                                 <div className="flex flex-col justify-center items-center">
+                                                    {
+                                                        errors && (
+                                                            <div className="text-red-600 mb-3 text-sm">{errors}</div>
+                                                        )
+                                                    }
                                                     <div className="flex items-center mb-4">
-                                                        <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <input id="default-checkbox" type="radio" value="femme" name="genre" onChange={handleChange}
+                                                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                         <label htmlFor="default-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-dark-300">Femme</label>
                                                     </div>
                                                     <div className="flex items-center mb-4">
-                                                        <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <input id="default-checkbox" type="radio" value="homme" name="genre" onChange={handleChange}
+                                                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                         <label htmlFor="default-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-dark-300">Homme</label>
                                                     </div>
                                                     <div className="flex items-center mb-4">
-                                                        <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                        <input id="default-checkbox" type="radio" value="tout" name="genre" onChange={handleChange}
+                                                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                                                         <label htmlFor="default-checkbox" className="ml-2 text-sm font-medium text-gray-900 dark:text-dark-300">les deux</label>
                                                     </div>
 
@@ -68,7 +97,7 @@ export default function AddCategorie() {
                                                         Save
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

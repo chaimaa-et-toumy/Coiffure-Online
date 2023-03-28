@@ -73,7 +73,7 @@ export default function Forgotpassword() {
                             <ToastContainer />
                             <p className="text-sm font-light text-black">
                                 go back to ?
-                                <Link to="/login"> <a href="#"
+                                <Link to="/login"> <a href="/#"
                                     className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign in</a>
                                 </Link>
                             </p>

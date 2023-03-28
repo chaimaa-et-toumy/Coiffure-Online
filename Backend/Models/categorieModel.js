@@ -2,7 +2,7 @@ const moongose = require('mongoose')
 
 const categorieSchema = moongose.Schema({
     genre: {
-        type: Boolean
+        type: String,
     }
 }, {
     timestamps: true

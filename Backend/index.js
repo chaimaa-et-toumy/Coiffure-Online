@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const router = require('./Routes/authRoute')
+const categorieRoute = require('./Routes/categorieRoute')
 const connectDb = require('./Config/DbConfig')
 const cors = require('cors')
 connectDb()
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 
 app.use('/api/auth', router)
+app.use('/api/categorie', categorieRoute)
 
 const port = process.env.PORT || 8080
 

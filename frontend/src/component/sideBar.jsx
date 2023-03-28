@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BsFillMenuButtonWideFill, BsFillChatQuoteFill, BsFillEnvelopePaperFill, BsBoxArrowLeft, BsCalendar2Month, BsFillPeopleFill, BsCardChecklist } from "react-icons/bs";
+import { BsFillMenuButtonWideFill, BsFillChatQuoteFill, BsBoxArrowLeft, BsCalendar2Month, BsFillPeopleFill, BsCardChecklist } from "react-icons/bs";
 export default function SideBar() {
 
   return (
@@ -9,7 +9,7 @@ export default function SideBar() {
       >
         <div className="sidebar-header flex items-center justify-center py-4">
           <div className="inline-flex">
-            <a href="" className="inline-flex flex-row items-center">
+            <a href="/#" className="inline-flex flex-row items-center">
               <svg className="w-10 h-10 text-red-400" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
