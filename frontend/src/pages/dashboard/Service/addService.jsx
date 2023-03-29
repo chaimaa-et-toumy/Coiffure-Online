@@ -1,8 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../../component/input";
+import axios from "axios";
 
-export default function AddService() {
+export default function AddService(props) {
     const [showModal, setShowModal] = useState(false);
+    const [service, setService] = useState({ Nom: "", prix: "", produitUtilise: "", categorie: "" })
+    const [errors, setError] = useState("");
+    const [Categorie, setCategories] = useState([]);
+
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/categorie/getAll')
+            .then((res) => {
+                setCategories(res.data)
+            })
+            .catch((err) => { console.log(err.message) })
+    }, [])
+
+    const handleChange = (e) => {
+        setService({ ...service, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:8080/api/service/add", service)
+            .then((res) => {
+                props.setRefresh(refresh => !refresh)
+                props.message(res.data);
+                setShowModal(false)
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                setError(err.response.data);
+
+            });
+    };
 
 
     return (
@@ -12,8 +44,7 @@ export default function AddService() {
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
                 className="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                onClick={() => setShowModal(true)}
-            >
+                onClick={() => setShowModal(true)}>
                 Add
             </button>
 
@@ -37,8 +68,13 @@ export default function AddService() {
                                         </button>
                                     </div>
                                     <div className="relative p-6 flex-auto">
-                                        <div className="my-4 text-slate-500 text-lg leading-relaxed">
+                                        <form className="my-4 text-slate-500 text-lg leading-relaxed" onSubmit={handleSubmit}>
                                             <div>
+                                                {
+                                                    errors && (
+                                                        <div className="text-red-600 mb-4 text-sm text-center">{errors}</div>
+                                                    )
+                                                }
                                                 <div className="grid md:grid-cols-2 md:gap-6">
                                                     <div className="relative z-0 w-full mb-6 group">
                                                         <Input
@@ -46,6 +82,8 @@ export default function AddService() {
                                                             name="Nom"
                                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                             placeholder=" "
+                                                            onChange={handleChange}
+                                                            value={service.Nom}
                                                         />
 
                                                         <label
@@ -59,9 +97,11 @@ export default function AddService() {
                                                         <Input
 
                                                             type="text"
-                                                            name="NumeroTele"
+                                                            name="prix"
                                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                             placeholder=" "
+                                                            onChange={handleChange}
+                                                            value={service.prix}
                                                         />
 
                                                         <label
@@ -75,9 +115,11 @@ export default function AddService() {
                                                 <div className="relative z-0 w-full mb-6 group">
                                                     <Input
                                                         type="text"
-                                                        name="Adresse"
+                                                        name="produitUtilise"
                                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                         placeholder=" "
+                                                        onChange={handleChange}
+                                                        value={service.produitUtilise}
                                                     />
                                                     <label
                                                         htmlFor="floating_email"
@@ -88,11 +130,16 @@ export default function AddService() {
                                                 </div>
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="femme" selected disabled>choisi</option>
-                                                            <option value="femme">femme</option>
-                                                            <option value="homme">homme</option>
-                                                            <option value="les_deux">les deux</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            name="categorie"
+                                                            onChange={handleChange}
+                                                            value={service.categorie}
+                                                        >
+                                                            {
+                                                                Categorie.map((categorie) => (
+                                                                    <option value={categorie._id}>{categorie.genre}</option>
+                                                                ))
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
@@ -106,13 +153,12 @@ export default function AddService() {
                                                     </button>
                                                     <button
                                                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                                        type="submit"
-                                                    >
+                                                        type="submit">
                                                         Save
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

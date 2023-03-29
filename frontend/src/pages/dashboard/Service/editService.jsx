@@ -1,13 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../../component/input";
+import axios from "axios";
 
-export default function EditService() {
+export default function EditService(props) {
     const [showModal, setShowModal] = useState(false);
+    const [data, setData] = useState({ Nom: "", prix: "", produitUtilise: "", categorie: "" });
+    const [errors, setError] = useState("");
+    const [currentId, setCurrentId] = useState(null);
+    const [Categorie, setCategories] = useState([]);
 
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/categorie/getAll')
+            .then((res) => {
+                setCategories(res.data)
+            })
+            .catch((err) => { console.log(err.message) })
+    }, [])
+
+    function getOneService(id) {
+        axios.get(`http://localhost:8080/api/service/getById/${id}`)
+            .then((res) => {
+                setData(res.data);
+                setCurrentId(id)
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const handleChange = (e) => {
+        setData({ ...data, [e.target.name]: e.target.value });
+        console.log(data);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:8080/api/service/update/${currentId}`, data)
+            .then((res) => {
+                props.setRefresh(refresh => !refresh)
+                props.message(res.data);
+                setShowModal(false)
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                setError(err.response.data);
+            });
+    }
 
     return (
         <>
-            <button onClick={() => setShowModal(true)}>
+            <button onClick={() => { setShowModal(true); getOneService(props.id) }} >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className="h-6 w-6" x-tooltip="tooltip">
                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -35,7 +79,7 @@ export default function EditService() {
                                         </button>
                                     </div>
                                     <div className="relative p-6 flex-auto">
-                                        <div className="my-4 text-slate-500 text-lg leading-relaxed">
+                                        <form className="my-4 text-slate-500 text-lg leading-relaxed" onSubmit={handleSubmit}>
                                             <div>
                                                 <div className="grid md:grid-cols-2 md:gap-6">
                                                     <div className="relative z-0 w-full mb-6 group">
@@ -44,6 +88,8 @@ export default function EditService() {
                                                             name="Nom"
                                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                             placeholder=" "
+                                                            value={data.Nom}
+                                                            onChange={handleChange}
                                                         />
 
                                                         <label
@@ -57,9 +103,11 @@ export default function EditService() {
                                                         <Input
 
                                                             type="text"
-                                                            name="NumeroTele"
+                                                            name="prix"
                                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                             placeholder=" "
+                                                            value={data.prix}
+                                                            onChange={handleChange}
                                                         />
 
                                                         <label
@@ -73,9 +121,11 @@ export default function EditService() {
                                                 <div className="relative z-0 w-full mb-6 group">
                                                     <Input
                                                         type="text"
-                                                        name="Adresse"
+                                                        name="produitUtilise"
                                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                         placeholder=" "
+                                                        value={data.produitUtilise}
+                                                        onChange={handleChange}
                                                     />
                                                     <label
                                                         htmlFor="floating_email"
@@ -86,11 +136,15 @@ export default function EditService() {
                                                 </div>
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="femme" selected disabled>choisi</option>
-                                                            <option value="femme">femme</option>
-                                                            <option value="homme">homme</option>
-                                                            <option value="les_deux">les deux</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            name="categorie"
+                                                            value={data.categorie._id}
+                                                            onChange={handleChange}>
+                                                            {
+                                                                Categorie.map((categorie, index) => (
+                                                                    <option key={index} value={categorie._id}>{categorie.genre}</option>
+                                                                ))
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
@@ -110,7 +164,7 @@ export default function EditService() {
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
