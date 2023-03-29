@@ -8,9 +8,9 @@ const createAdminAuto = async () => {
         email: process.env.MONGO_EMAIL,
         password: await bycrpt.hash(process.env.MONGO_PASSWORD, await bycrpt.genSalt(10)),
         eToken: crypto.randomBytes(64).toString('hex'),
-        role: '6400bea1c7c7c873fbcb8dcb',
+        role: 'Admin',
     }
-    const Admincount = await User.countDocuments({ role: '6400bea1c7c7c873fbcb8dcb' })
+    const Admincount = await User.countDocuments({ role: 'Admin' })
     if (Admincount === 0) {
         const admin = new User(Admin)
         await admin.save()

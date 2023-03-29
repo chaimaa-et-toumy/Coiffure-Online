@@ -29,8 +29,9 @@ const userSchema = moongose.Schema({
         type: Boolean
     },
     role: {
-        type: moongose.Schema.Types.ObjectId,
-        ref: 'Role'
+        type: String,
+        ref: 'Role',
+        default: 'Client'
     },
 }, {
     timestamps: true
