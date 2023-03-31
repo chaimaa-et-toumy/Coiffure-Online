@@ -18,7 +18,7 @@ const Login = async (req, res) => {
     }
 
     try {
-        const user = await User.findOne({ email }).populate("role")
+        const user = await User.findOne({ email })
         if (!user) {
             res.status(404).send("User not found")
             return;
@@ -29,7 +29,7 @@ const Login = async (req, res) => {
         }
         else if (user.isVerifed) {
             let token = generateToken(user._id, user.email, user.name)
-            ls('token', token)
+            ls.set('token', token)
             res.status(200).json({
                 _id: user._id,
                 name: user.name,
@@ -37,6 +37,9 @@ const Login = async (req, res) => {
                 password: user.password,
                 token: token
             })
+        }
+        else {
+            res.status(400).send("Verify your email first")
         }
     } catch (err) {
         console.error(err);

@@ -29,7 +29,7 @@ export default function Login() {
             .then((response) => {
                 console.log(response.data)
                 localStorage.setItem("token", JSON.stringify(response.data))
-                window.location = "/"
+                window.location = "/dashboard"
             })
             .catch((err) => {
                 setErrors({ ...errors, email: err.response.data })

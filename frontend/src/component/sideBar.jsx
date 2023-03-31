@@ -1,6 +1,16 @@
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 import { BsFillMenuButtonWideFill, BsFillChatQuoteFill, BsBoxArrowLeft, BsCalendar2Month, BsFillPeopleFill, BsCardChecklist } from "react-icons/bs";
 export default function SideBar() {
+
+  const token_ = localStorage.getItem('token')
+
+  function logout() {
+    if (token_) {
+      localStorage.removeItem('token')
+      window.location = "/login"
+    }
+  }
 
   return (
     <>
@@ -98,6 +108,7 @@ export default function SideBar() {
               </li>
             </Link>
             <li
+              role="button" onClick={logout}
               className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
               <span className="flex items-center justify-center text-lg text-red-400">
