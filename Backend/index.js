@@ -4,6 +4,7 @@ const router = require('./Routes/authRoute')
 const categorieRoute = require('./Routes/categorieRoute')
 const serviceRoute = require('./Routes/serviceRoute')
 const clientRoute = require('./Routes/clientRoute')
+const commentairRoute = require('./Routes/commantaireRoute')
 const connectDb = require('./Config/DbConfig')
 const cors = require('cors')
 connectDb()
@@ -17,6 +18,7 @@ app.use('/api/auth', router)
 app.use('/api/categorie', categorieRoute)
 app.use('/api/service', serviceRoute)
 app.use('/api/client', clientRoute)
+app.use('/api/commentaire', commentairRoute)
 
 const port = process.env.PORT || 8080
 

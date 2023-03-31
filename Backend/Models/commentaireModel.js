@@ -17,6 +17,10 @@ const CommentaireSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    service: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'service',
+    }
 }, {
     timestamps: true
 })
