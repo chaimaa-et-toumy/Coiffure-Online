@@ -1,8 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../../component/input";
+import axios from 'axios'
 
-export default function AddRendezVous() {
+export default function AddRendezVous(props) {
     const [showModal, setShowModal] = useState(false);
+    const [rendezvous, SetRendezVous] = useState({ Date: "", Heure: "", Etat: "", service: "", client: "" })
+    const [errors, setError] = useState("");
+
+    const [client, setClient] = useState([]);
+    const [service, setService] = useState([])
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/client/getAll')
+            .then((res) => {
+                setClient(res.data)
+            })
+            .catch((err) => { console.log(err.message) })
+    }, [])
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/service/getAll')
+            .then((res) => {
+                setService(res.data)
+            })
+            .catch((err) => { console.log(err.message) })
+    }, [])
+
+    const handleChange = (e) => {
+        SetRendezVous({ ...rendezvous, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post("http://localhost:8080/api/rendezvous/add", rendezvous)
+            .then((res) => {
+                props.setRefresh(refresh => !refresh)
+                props.message(res.data);
+                setShowModal(false)
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                setError(err.response.data);
+
+            });
+    };
+
+
 
 
     return (
@@ -36,29 +79,38 @@ export default function AddRendezVous() {
                                             </span>
                                         </button>
                                     </div>
-                                    <div className="relative p-6 flex-auto">
+                                    <form className="relative p-6 flex-auto" onSubmit={handleSubmit}>
                                         <div className="my-4 text-slate-500 text-lg leading-relaxed">
                                             <div>
                                                 <div className="relative z-0 w-full mb-6 group">
-                                                    <Input
-                                                        type="text"
-                                                        name="Adresse"
-                                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                        placeholder=" "
-                                                    />
-                                                    <label
-                                                        htmlFor="floating_email"
-                                                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                                                    >
-                                                        Nom de client
-                                                    </label>
+                                                    {
+                                                        errors && (
+                                                            <div className="text-red-600 mb-4 text-sm text-center">{errors}</div>
+                                                        )
+                                                    }
+                                                    <div className="flex w-100 ">
+                                                        <div className="mb-3 xl:w-96">
+                                                            <select data-te-select-init style={{ width: '100%' }}
+                                                                name="client"
+                                                                onChange={handleChange}
+                                                            >
+                                                                <option value="service" selected disabled>client</option>
+                                                                {
+                                                                    client.map((client) => (
+                                                                        <option value={client._id}>{client.fullName}</option>
+                                                                    ))
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className="relative z-0 w-full mb-6 group">
                                                     <Input
                                                         type="date"
-                                                        name="Adresse"
+                                                        name="Date"
                                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                         placeholder=" "
+                                                        onChange={handleChange}
                                                     />
                                                     <label
                                                         htmlFor="floating_email"
@@ -70,9 +122,10 @@ export default function AddRendezVous() {
                                                 <div className="relative z-0 w-full mb-6 group">
                                                     <Input
                                                         type="time"
-                                                        name="Adresse"
+                                                        name="Heure"
                                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                         placeholder=" "
+                                                        onChange={handleChange}
                                                     />
                                                     <label
                                                         htmlFor="floating_email"
@@ -83,20 +136,28 @@ export default function AddRendezVous() {
                                                 </div>
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="service" selected disabled>type de service</option>
-                                                            <option value="test 1">from table service</option>
-                                                            <option value="test 2">from table service</option>
-                                                            <option value="test 3">from table service</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            name="service"
+                                                            onChange={handleChange}
+                                                        >
+                                                            <option value="service" selected disabled>Service</option>
+                                                            {
+                                                                service.map((service) => (
+                                                                    <option value={service._id}>{service.Nom}</option>
+                                                                ))
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="service" selected disabled>etat</option>
-                                                            <option value="test 1">en attente</option>
-                                                            <option value="test 3">terminé</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            name="Etat"
+                                                            onChange={handleChange}
+                                                        >
+                                                            <option value="" selected disabled>Etat</option>
+                                                            <option value="en attente">en attente</option>
+                                                            <option value="terminé">terminé</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -117,7 +178,7 @@ export default function AddRendezVous() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

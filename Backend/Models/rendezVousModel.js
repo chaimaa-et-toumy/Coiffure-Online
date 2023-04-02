@@ -2,13 +2,14 @@ const moongose = require('mongoose')
 
 const rendezVousSchema = moongose.Schema({
     Date: {
-        type: Date,
+        type: String,
+        match: /^\d{4}-\d{2}-\d{2}$/
     },
     Heure: {
-        type: Date,
+        type: String,
     },
-    disponibilite: {
-        type: Boolean,
+    Etat: {
+        type: String,
     },
     service: {
         type: moongose.Schema.Types.ObjectId,

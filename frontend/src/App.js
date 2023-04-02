@@ -10,6 +10,7 @@ import Categorie from "./pages/dashboard/Categorie/categorie";
 import Service from "./pages/dashboard/Service/service";
 import Rendez_vous from "./pages/dashboard/Rendez_vous/rendez_vous";
 import Commantaire from "./pages/dashboard/commantaire";
+import Home from "./pages/client/home"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/service" element={<Service />} />
           <Route path="/rendez-vous" element={<Rendez_vous />} />
           <Route path="/commentaire" element={<Commantaire />} />
+          <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import axios from 'axios'
 import { BsFillMenuButtonWideFill, BsFillChatQuoteFill, BsBoxArrowLeft, BsCalendar2Month, BsFillPeopleFill, BsCardChecklist } from "react-icons/bs";
 export default function SideBar() {
 

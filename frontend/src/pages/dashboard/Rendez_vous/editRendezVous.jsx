@@ -1,13 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../../../component/input";
+import axios from 'axios'
 
-export default function EditRendezVous() {
+export default function EditRendezVous(props) {
     const [showModal, setShowModal] = useState(false);
+    const [rendezvous, SetRendezVous] = useState({ Date: "", Heure: "", Etat: "", service: "", client: "" })
+    const [errors, setError] = useState("");
+    const [currentId, setCurrentId] = useState(null);
+    const [client, setClient] = useState([])
+    const [service, setService] = useState([])
 
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/client/getAll')
+            .then((res) => {
+                setClient(res.data)
+            })
+            .catch((err) => { console.log(err.message) })
+    }, [])
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/service/getAll')
+            .then((res) => {
+                setService(res.data)
+            })
+            .catch((err) => { console.log(err.message) })
+    }, [])
+
+    function getOneRendezVous(id) {
+        axios.get(`http://localhost:8080/api/rendezvous/getById/${id}`)
+            .then((res) => {
+                SetRendezVous(res.data);
+                setCurrentId(id)
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const handleChange = (e) => {
+        SetRendezVous({ ...rendezvous, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:8080/api/rendezvous/update/${currentId}`, rendezvous)
+            .then((res) => {
+                props.setRefresh(refresh => !refresh)
+                props.message(res.data);
+                setShowModal(false)
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+                setError(err.response.data);
+
+            });
+    };
 
     return (
         <>
-            <button onClick={() => setShowModal(true)}>
+            <button onClick={() => { setShowModal(true); getOneRendezVous(props.id) }}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className="h-6 w-6" x-tooltip="tooltip">
                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -20,7 +72,7 @@ export default function EditRendezVous() {
                     <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                             <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                <form onSubmit={handleSubmit} className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                     <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                                         <h5 className="text-center text-2xl font-semibold ">
                                             Edit Rendez vous
@@ -37,26 +89,32 @@ export default function EditRendezVous() {
                                     <div className="relative p-6 flex-auto">
                                         <div className="my-4 text-slate-500 text-lg leading-relaxed">
                                             <div>
+                                                {
+                                                    errors && (
+                                                        <div className="text-red-600 mb-4 text-sm text-center">{errors}</div>
+                                                    )
+                                                }
                                                 <div className="relative z-0 w-full mb-6 group">
-                                                    <Input
-                                                        type="text"
-                                                        name="Adresse"
-                                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                                        placeholder=" "
-                                                    />
-                                                    <label
-                                                        htmlFor="floating_email"
-                                                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                                    <select data-te-select-init style={{ width: '100%' }}
+                                                        name="client"
+                                                        onChange={handleChange}
+                                                        value={rendezvous.client._id}
                                                     >
-                                                        Nom de client
-                                                    </label>
+                                                        <option value="service" selected disabled>client</option>
+                                                        {
+                                                            client.map((client) => (
+                                                                <option value={client._id}>{client.fullName}</option>
+                                                            ))
+                                                        }
+                                                    </select>
                                                 </div>
                                                 <div className="relative z-0 w-full mb-6 group">
                                                     <Input
                                                         type="date"
-                                                        name="Adresse"
+                                                        name="Date"
                                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                         placeholder=" "
+                                                        value={rendezvous.Date}
                                                     />
                                                     <label
                                                         htmlFor="floating_email"
@@ -68,9 +126,10 @@ export default function EditRendezVous() {
                                                 <div className="relative z-0 w-full mb-6 group">
                                                     <Input
                                                         type="time"
-                                                        name="Adresse"
+                                                        name="Heure"
                                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                                         placeholder=" "
+                                                        value={rendezvous.Heure}
                                                     />
                                                     <label
                                                         htmlFor="floating_email"
@@ -81,20 +140,30 @@ export default function EditRendezVous() {
                                                 </div>
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="service" selected disabled>type de service</option>
-                                                            <option value="test 1">from table service</option>
-                                                            <option value="test 2">from table service</option>
-                                                            <option value="test 3">from table service</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            name="service"
+                                                            onChange={handleChange}
+                                                            value={rendezvous.service._id}
+                                                        >
+                                                            <option value="service" selected disabled>Service</option>
+                                                            {
+                                                                service.map((service) => (
+                                                                    <option value={service._id}>{service.Nom}</option>
+                                                                ))
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="flex w-100 ">
                                                     <div className="mb-3 xl:w-96">
-                                                        <select data-te-select-init style={{ width: '100%' }}>
-                                                            <option value="service" selected disabled>etat</option>
-                                                            <option value="test 1">en attente</option>
-                                                            <option value="test 3">terminé</option>
+                                                        <select data-te-select-init style={{ width: '100%' }}
+                                                            name="Etat"
+                                                            onChange={handleChange}
+                                                            value={rendezvous.Etat}
+                                                        >
+                                                            <option value="" selected disabled>Etat</option>
+                                                            <option value="en attente">en attente</option>
+                                                            <option value="terminé">terminé</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -116,7 +185,7 @@ export default function EditRendezVous() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                         <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
