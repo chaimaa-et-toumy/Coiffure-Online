@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Input from '../../component/input'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import Api from '../../Utils/Api'
 import { useParams } from 'react-router-dom'
 
 function Resetpassword() {
@@ -30,7 +30,7 @@ function Resetpassword() {
             setErrors({ ...errors, confirmPassword: "enter the same password" })
             return
         }
-        await axios.post('http://localhost:8080/api/auth/resetpassword/' + token, formData)
+        await Api.post('/auth/resetpassword/' + token, formData)
             .then((response) => {
                 toast.info(response.data, {
                     position: "top-right",

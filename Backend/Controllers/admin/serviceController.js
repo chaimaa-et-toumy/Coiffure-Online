@@ -1,4 +1,3 @@
-// const Categorie = require('../../models/categorieModel');
 const mongoose = require('mongoose');
 const Categorie = mongoose.models['categorie'] || mongoose.model('categorie', categorieSchema);
 const Service = require('../../models/serviceModel');
@@ -7,15 +6,15 @@ const Service = require('../../models/serviceModel');
 //url : api/service/add
 //acces : Private
 const AddService = async (req, res) => {
-    const { Nom, prix, produitUtilise, categorie } = req.body;
-    if (!Nom || !prix || !produitUtilise || !categorie) {
+    const { Nom, prix, produitUtilise, categorie, description } = req.body;
+    if (!Nom || !prix || !categorie || !description) {
         return res.status(400).send("all fields are required")
     }
 
     try {
         const ServiceExist = await Service.findOne({ Nom })
         if (!ServiceExist) {
-            const service = await Service.create({ Nom, prix, produitUtilise, categorie })
+            const service = await Service.create({ Nom, prix, produitUtilise, categorie, description })
             return res.status(200).send("service added successfully")
         }
         return res.status(400).send("service already exist")
@@ -30,9 +29,9 @@ const AddService = async (req, res) => {
 //acces : Private
 const UpdateService = async (req, res) => {
     const { id } = req.params
-    const { Nom, prix, produitUtilise, categorie } = req.body
+    const { Nom, prix, produitUtilise, categorie, description } = req.body
 
-    if (!Nom || !prix || !produitUtilise || !categorie) {
+    if (!Nom || !prix || !produitUtilise || !categorie || !description) {
         return res.status(400).send("all fields are required")
     }
 
@@ -46,7 +45,7 @@ const UpdateService = async (req, res) => {
             return res.status(400).send("service already exist")
         }
         else {
-            await Service.updateOne({ _id: id }, { Nom, prix, produitUtilise, categorie })
+            await Service.updateOne({ _id: id }, { Nom, prix, produitUtilise, categorie, description })
             return res.status(200).send("service updated successfully")
         }
 

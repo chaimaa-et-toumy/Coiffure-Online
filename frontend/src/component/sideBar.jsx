@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { BsFillMenuButtonWideFill, BsFillChatQuoteFill, BsBoxArrowLeft, BsCalendar2Month, BsFillPeopleFill, BsCardChecklist } from "react-icons/bs";
 export default function SideBar() {
 
@@ -12,7 +12,7 @@ export default function SideBar() {
   }
 
   return (
-    <>
+    <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
       <aside
         className="sidebar w-64 md:shadow transform -translate-x-full md:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500"
       >
@@ -57,7 +57,7 @@ export default function SideBar() {
             <li className="my-px">
               <span className="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase"></span>
             </li>
-            <Link to="/users">
+            <Link to="users">
               <li
                 className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700">
                 <span className="flex items-center justify-center text-lg text-gray-400">
@@ -66,7 +66,7 @@ export default function SideBar() {
                 <span className="ml-3">Users</span>
               </li>
             </Link>
-            <Link to="/categorie">
+            <Link to="categorie">
               <li
                 className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
               >
@@ -76,7 +76,7 @@ export default function SideBar() {
                 <span className="ml-3">Categorie</span>
               </li>
             </Link>
-            <Link to="/service">
+            <Link to="service">
               <li
                 className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
               >
@@ -86,7 +86,7 @@ export default function SideBar() {
                 <span className="ml-3">Service</span>
               </li>
             </Link>
-            <Link to="/rendez-vous">
+            <Link to="rendez-vous">
               <li
                 className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
               >
@@ -96,7 +96,7 @@ export default function SideBar() {
                 <span className="ml-3">Rendez vous</span>
               </li>
             </Link>
-            <Link to="/commentaire">
+            <Link to="commentaire">
               <li
                 className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
               >
@@ -118,6 +118,8 @@ export default function SideBar() {
           </ul>
         </div>
       </aside>
-    </>
+      <Outlet />
+
+    </div>
   )
 }

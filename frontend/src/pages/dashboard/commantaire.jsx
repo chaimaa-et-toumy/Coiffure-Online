@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../component/navBar'
-import SideBar from '../../component/sideBar'
-import axios from 'axios'
+import Api from '../../Utils/Api'
 
 export default function Commantaire() {
 
@@ -10,10 +9,10 @@ export default function Commantaire() {
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/api/commentaire/getAll')
+        Api.get('/commentaire/getAll')
             .then(res => {
                 setCommantaire(res.data)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(err => {
                 console.log(err)
@@ -22,7 +21,7 @@ export default function Commantaire() {
 
     //delete commentaire
     const deleteCommantaire = (id) => {
-        axios.delete(`http://localhost:8080/api/commentaire/delete/${id}`)
+        Api.delete(`/commentaire/delete/${id}`)
             .then(res => {
                 setRefresh(!refresh)
             })
@@ -32,8 +31,7 @@ export default function Commantaire() {
     }
 
     return (
-        <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
-            <SideBar />
+        <div className="w-full">
             <main className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
                 <NavBar />
                 <div className="main-content flex flex-col flex-grow p-4">
@@ -56,7 +54,7 @@ export default function Commantaire() {
                                 {
                                     commantaire.map((Commente, index) => {
                                         return (
-                                            <tr className="hover:bg-gray-50">
+                                            <tr key={Commente._id} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4">
                                                     <span>{Commente.Name}</span>
                                                 </td>

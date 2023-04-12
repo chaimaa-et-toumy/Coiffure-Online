@@ -3,9 +3,9 @@ import NavBar from '../../../component/navBar'
 import SideBar from '../../../component/sideBar'
 import AddRendezVous from './addRendezVous'
 import EditRendezVous from './editRendezVous'
-import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Api from '../../../Utils/Api'
 
 export default function Rendez_vous() {
 
@@ -14,10 +14,10 @@ export default function Rendez_vous() {
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/api/rendezvous/getAll')
+        Api.get('/rendezvous/getAll')
             .then(res => {
                 setRendezVous(res.data)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(err => {
                 console.log(err)
@@ -26,7 +26,7 @@ export default function Rendez_vous() {
 
     //delete rendez vous
     const deleteRendezVous = (id) => {
-        axios.delete(`http://localhost:8080/api/rendezvous/delete/${id}`)
+        Api.delete(`/rendezvous/delete/${id}`)
             .then(res => {
                 setRefresh(!refresh)
             })
@@ -51,8 +51,7 @@ export default function Rendez_vous() {
 
 
     return (
-        <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
-            <SideBar />
+        <div className="w-full">
             <main className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
                 <NavBar />
                 <div className="main-content flex flex-col flex-grow p-4">
@@ -80,9 +79,9 @@ export default function Rendez_vous() {
                                     rendezvous.map((data, index) => {
 
                                         return (
-                                            <tr className="hover:bg-gray-50">
+                                            <tr  key={data._id} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4">
-                                                    <span>{data.client.fullName}</span>
+                                                    <span>{data.client?.fullName}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex gap-2">
@@ -93,7 +92,7 @@ export default function Rendez_vous() {
                                                     <span>{data.Heure}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span>{data.service.Nom}</span>
+                                                    <span>{data.service?.Nom}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span>{data.Etat}</span>

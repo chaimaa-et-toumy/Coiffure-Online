@@ -15,6 +15,9 @@ const rendezVousSchema = moongose.Schema({
         type: moongose.Schema.Types.ObjectId,
         ref: 'service'
     },
+    phone: {
+        type: String,
+    },
     client: {
         type: moongose.Schema.Types.ObjectId,
         ref: 'user'

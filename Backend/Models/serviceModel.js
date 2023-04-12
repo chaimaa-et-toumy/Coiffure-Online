@@ -10,6 +10,9 @@ const serviceSchema = moongose.Schema({
     produitUtilise: {
         type: String,
     },
+    description: {
+        type: String,
+    },
     categorie: {
         type: moongose.Schema.Types.ObjectId,
         ref: 'categorie'

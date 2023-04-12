@@ -5,7 +5,7 @@ export default function NavBar() {
     return (
         <header className="header bg-white shadow py-4 px-4">
             <div className="header-content flex items-center flex-row">
-                <form action="#">
+                <form>
                     <div className="hidden md:flex relative">
                         <div
                             className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">

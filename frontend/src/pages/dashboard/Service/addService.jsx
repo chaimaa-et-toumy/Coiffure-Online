@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../../component/input";
-import axios from "axios";
+import Api from '../../../Utils/Api'
+
 
 export default function AddService(props) {
     const [showModal, setShowModal] = useState(false);
-    const [service, setService] = useState({ Nom: "", prix: "", produitUtilise: "", categorie: "" })
+    const [service, setService] = useState({ Nom: "", prix: "", produitUtilise: "", categorie: "", description: "" })
     const [errors, setError] = useState("");
     const [Categorie, setCategories] = useState([]);
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/categorie/getAll')
+        Api.get('/categorie/getAll')
             .then((res) => {
                 setCategories(res.data)
             })
@@ -19,11 +20,12 @@ export default function AddService(props) {
 
     const handleChange = (e) => {
         setService({ ...service, [e.target.name]: e.target.value });
+        console.log(service)
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8080/api/service/add", service)
+        Api.post("/service/add", service)
             .then((res) => {
                 props.setRefresh(refresh => !refresh)
                 props.message(res.data);
@@ -126,6 +128,22 @@ export default function AddService(props) {
                                                         className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                                     >
                                                         Produit Utilisée
+                                                    </label>
+                                                </div>
+                                                <div className="relative z-0 w-full mb-6 group">
+                                                    <Input
+                                                        type="text"
+                                                        name="description"
+                                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                                        placeholder=" "
+                                                        onChange={handleChange}
+                                                        value={service.description}
+                                                    />
+                                                    <label
+                                                        htmlFor="floating_email"
+                                                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                                    >
+                                                        Description
                                                     </label>
                                                 </div>
                                                 <div className="flex w-100 ">

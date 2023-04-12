@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../../component/navBar'
 import SideBar from '../../../component/sideBar'
-import axios from 'axios'
-
+import Api from '../../../Utils/Api'
+import AddUser from './addUser'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Users() {
     const [users, setUsers] = useState([])
@@ -10,10 +12,10 @@ export default function Users() {
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/api/client/getAll')
+        Api.get('/client/getAll')
             .then(res => {
                 setUsers(res.data)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(err => {
                 console.log(err)
@@ -22,7 +24,7 @@ export default function Users() {
 
     //delete users
     const deleteUser = (id) => {
-        axios.delete(`http://localhost:8080/api/client/delete/${id}`)
+        Api.delete(`/client/delete/${id}`)
             .then(res => {
                 setRefresh(!refresh)
             })
@@ -30,16 +32,34 @@ export default function Users() {
                 console.log(err)
             })
     }
+    // show toast
+    const ShowToastMessage = (message) => {
+        toast.info(message, {
+            position: "top-right",
+            autoClose: 6000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
 
 
 
     return (
-        <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
-            <SideBar />
-            <main className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
+        <div className="w-full">
+            {/* <SideBar /> */}
+            <main  className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
                 <NavBar />
                 <div className="main-content flex flex-col flex-grow p-4">
-                    <h1 className="font-bold text-2xl text-gray-700">Users</h1>
+                    <div className="flex justify-between items-center">
+                        <div className="font-bold text-2xl text-gray-700">Users</div>
+                        <div className="p-4 mr-3">
+                            <AddUser setRefresh={setRefresh} message={ShowToastMessage} />
+                        </div>
+                    </div>
 
                     <div className="rounded-lg border border-gray-200 shadow-md m-3 overflow-x-scroll">
                         <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
@@ -54,7 +74,7 @@ export default function Users() {
                                 {
                                     users.map((user, index) => {
                                         return (
-                                            <tr className="hover:bg-gray-50">
+                                            <tr key={user._id} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4">
                                                     <span>{user.fullName}</span>
                                                 </td>
@@ -81,9 +101,11 @@ export default function Users() {
                                 }
                             </tbody>
                         </table>
+                        <ToastContainer />
                     </div>
+
                 </div>
             </main>
-        </div>
+        </div >
     )
 }

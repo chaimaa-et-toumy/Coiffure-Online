@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import Api from '../../../Utils/Api'
+
 
 export default function EditCategorie(props) {
     const [showModal, setShowModal] = useState(false);
@@ -8,7 +9,7 @@ export default function EditCategorie(props) {
     const [currentId, setCurrentId] = useState(null);
 
     function getOneCategorie(id) {
-        axios.get(`http://localhost:8080/api/categorie/getById/${id}`)
+        Api.get(`/categorie/getById/${id}`)
             .then((res) => {
                 setData(res.data);
                 setCurrentId(id)
@@ -26,7 +27,7 @@ export default function EditCategorie(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:8080/api/categorie/update/${currentId}`, data)
+        Api.put(`/categorie/update/${currentId}`, data)
             .then((res) => {
                 props.setRefresh(refresh => !refresh)
                 props.message(res.data);

@@ -7,17 +7,18 @@ const ClientModel = require('../../Models/UserModel')
 //url : api/rendezvous/add
 //acces : public
 const AddRendezVous = async (req, res) => {
-    const { Date, Heure, Etat, service, client } = req.body;
-    console.log(Date)
+    const { Date, Heure, service, client, phone } = req.body;
 
-    if (!Date || !Heure || !Etat || !service || !client) {
+    console.log(req.body)
+
+    if (!Date || !Heure || !service || !client || !phone) {
         return res.status(400).send("all fields are required")
     }
 
     try {
         const RendezVousExist = await RendezVous.findOne({ Date, Heure })
         if (!RendezVousExist) {
-            await RendezVous.create({ Date, Heure, Etat, service, client })
+            await RendezVous.create({ Date, Heure, Etat: "en attente", service, client, phone })
             return res.status(200).send("rendez vous added successfully")
         } else {
             return res.status(400).send("rendez vous already exist")

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Input from '../../component/input'
-import axios from 'axios'
+import Api from '../../Utils/Api'
 export default function Login() {
 
     const initailValue = { email: "", password: "" }
@@ -25,13 +25,14 @@ export default function Login() {
             setErrors({ ...errors, password: "Password is required" })
             return
         }
-        await axios.post('http://localhost:8080/api/auth/login', formData)
+        await Api.post('/auth/login', formData)
             .then((response) => {
                 console.log(response.data)
                 localStorage.setItem("token", JSON.stringify(response.data))
                 window.location = "/dashboard"
             })
             .catch((err) => {
+                console.log(err);
                 setErrors({ ...errors, email: err.response.data })
             })
     }

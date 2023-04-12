@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Input from '../../component/input'
-import axios from 'axios'
+import Api from '../../Utils/Api'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,7 +22,7 @@ export default function Forgotpassword() {
         if (!formValues.email) {
             setErrors({ ...errors, email: "Email is required!" })
         }
-        await axios.post('http://localhost:8080/api/auth/forgetPassword', formValues)
+        await Api.post('/auth/forgetPassword', formValues)
             .then((response) => {
                 toast.info(response.data.msg, {
                     position: "top-right",
@@ -71,10 +71,10 @@ export default function Forgotpassword() {
                                 Forgot password
                             </button>
                             <ToastContainer />
-                            <p className="text-sm font-light text-black">
+                            <p className="text-sm font-light text-black flex">
                                 go back to ?
                                 <Link to="/login"> <a href="/#"
-                                    className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign in</a>
+                                    className="font-medium text-primary-600 hover:underline dark:text-primary-500 px-1">Sign in</a>
                                 </Link>
                             </p>
                         </form>

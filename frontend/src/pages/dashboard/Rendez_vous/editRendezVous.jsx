@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../../component/input";
-import axios from 'axios'
+import Api from '../../../Utils/Api'
 
 export default function EditRendezVous(props) {
     const [showModal, setShowModal] = useState(false);
@@ -11,7 +11,7 @@ export default function EditRendezVous(props) {
     const [service, setService] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/client/getAll')
+        Api.get('/client/getAll')
             .then((res) => {
                 setClient(res.data)
             })
@@ -19,7 +19,7 @@ export default function EditRendezVous(props) {
     }, [])
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/service/getAll')
+        Api.get('/service/getAll')
             .then((res) => {
                 setService(res.data)
             })
@@ -27,7 +27,7 @@ export default function EditRendezVous(props) {
     }, [])
 
     function getOneRendezVous(id) {
-        axios.get(`http://localhost:8080/api/rendezvous/getById/${id}`)
+        Api.get(`/rendezvous/getById/${id}`)
             .then((res) => {
                 SetRendezVous(res.data);
                 setCurrentId(id)
@@ -44,7 +44,7 @@ export default function EditRendezVous(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`http://localhost:8080/api/rendezvous/update/${currentId}`, rendezvous)
+        Api.put(`/rendezvous/update/${currentId}`, rendezvous)
             .then((res) => {
                 props.setRefresh(refresh => !refresh)
                 props.message(res.data);

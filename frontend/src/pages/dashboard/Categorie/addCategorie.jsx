@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import Api from '../../../Utils/Api'
+
 
 export default function AddCategorie(props) {
     const [showModal, setShowModal] = useState(false);
@@ -12,7 +13,7 @@ export default function AddCategorie(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:8080/api/categorie/add", categorie)
+        Api.post("/categorie/add", categorie)
             .then((res) => {
                 props.setRefresh(refresh => !refresh)
                 props.message(res.data);

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from '../../../component/navBar'
-import SideBar from '../../../component/sideBar'
 import AddCategorie from './addCategorie'
 import EditCategories from './editCategorie'
-import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Api from '../../../Utils/Api'
+
 
 
 export default function Categorie() {
@@ -15,7 +15,7 @@ export default function Categorie() {
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/api/categorie/getAll')
+        Api.get('/categorie/getAll')
             .then(res => {
                 setCategories(res.data)
             })
@@ -42,7 +42,7 @@ export default function Categorie() {
 
     //delete categorie
     const deleteCategorie = (id) => {
-        axios.delete(`http://localhost:8080/api/categorie/delete/${id}`)
+        Api.delete(`/categorie/delete/${id}`)
             .then(res => {
                 setRefresh(!refresh)
             })
@@ -52,8 +52,7 @@ export default function Categorie() {
     }
 
     return (
-        <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
-            <SideBar />
+        <div className="w-full">
             <main className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
                 <NavBar />
                 <div className="main-content flex flex-col flex-grow p-4">

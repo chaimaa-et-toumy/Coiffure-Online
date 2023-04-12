@@ -3,9 +3,10 @@ import NavBar from '../../../component/navBar'
 import SideBar from '../../../component/sideBar'
 import AddService from './addService'
 import EditService from './editService'
-import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Api from '../../../Utils/Api'
+
 
 export default function Service() {
 
@@ -14,7 +15,7 @@ export default function Service() {
 
     useEffect(() => {
 
-        axios.get('http://localhost:8080/api/service/getAll')
+        Api.get('/service/getAll')
             .then(res => {
                 setService(res.data)
             })
@@ -25,7 +26,7 @@ export default function Service() {
 
     //delete service
     const deleteService = (id) => {
-        axios.delete(`http://localhost:8080/api/service/delete/${id}`)
+        Api.delete(`/service/delete/${id}`)
             .then(res => {
                 setRefresh(!refresh)
             })
@@ -50,8 +51,7 @@ export default function Service() {
 
 
     return (
-        <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800">
-            <SideBar />
+        <div className="w-full">
             <main className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
                 <NavBar />
                 <div className="main-content flex flex-col flex-grow p-4">
@@ -70,6 +70,7 @@ export default function Service() {
                                     <th scope="col" className="px-6 py-4 font-medium text-gray-900">Nom</th>
                                     <th scope="col" className="px-6 py-4 font-medium text-gray-900">Prix</th>
                                     <th scope="col" className="px-6 py-4 font-medium text-gray-900">Produit Utilisé</th>
+                                    <th scope="col" className="px-6 py-4 font-medium text-gray-900">Description</th>
                                     <th scope="col" className="px-6 py-4 font-medium text-gray-900">type de genre</th>
                                 </tr>
                             </thead>
@@ -77,7 +78,7 @@ export default function Service() {
                                 {
                                     service.map((service, index) => {
                                         return (
-                                            <tr className="hover:bg-gray-50">
+                                            <tr key={service._id} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4">
                                                     <span>{service.Nom}</span>
                                                 </td>
@@ -90,7 +91,10 @@ export default function Service() {
                                                     <span>{service.produitUtilise}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span>{service.categorie.genre}</span>
+                                                    <span>{service.description}</span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span>{service.categorie?.genre}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex justify-end gap-4">

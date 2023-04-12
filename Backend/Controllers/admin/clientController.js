@@ -5,8 +5,8 @@ const Client = mongoose.models['user'] || mongoose.model('user', userSchema);
 //url : api/client/add
 //acces : Private
 const AddClient = async (req, res) => {
-    const { username, email, password, fullName, phoneNumber } = req.body
-    if (!username || !email || !password || !fullName || !phoneNumber) {
+    const { email, fullName, phoneNumber } = req.body
+    if (!email || !fullName || !phoneNumber) {
         return res.status(400).send("all fields are required")
     }
 
@@ -14,7 +14,7 @@ const AddClient = async (req, res) => {
 
         const ClientExist = await Client.findOne({ email })
         if (!ClientExist) {
-            await Client.create({ username, email, password, fullName, phoneNumber })
+            await Client.create({ email, fullName, phoneNumber })
             return res.status(200).send("client added successfully")
         } else {
             return res.status(400).send("client already exist")
