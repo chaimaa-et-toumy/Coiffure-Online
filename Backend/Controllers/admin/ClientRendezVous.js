@@ -7,6 +7,8 @@ const addRendezVousClient = async (req, res) => {
 
     const { Date, Heure, service, phoneNumber, email, fullName } = req.body
 
+
+
     const ClientInfo = {
         email,
         phoneNumber,

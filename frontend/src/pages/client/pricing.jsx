@@ -2,11 +2,9 @@ import React from 'react'
 
 export default function Pricing() {
 
-    // Tab Filter
     const pricingTabFilter = () => {
-        // get all tab buttons: all pricing, beauty & spa, body treatments, ...
+        // Select all the filter buttons and grid items
         const tabFilter = document.querySelectorAll('.tab-filter button');
-        // get all item cards: hair cutting & fitting, shaving & facial, ...
         const gridList = document.querySelectorAll('.grid-list li');
 
         // buttons exist
@@ -14,7 +12,7 @@ export default function Pricing() {
             // on each tab button add listener
             tabFilter.forEach((btn) => {
                 btn.addEventListener('click', function () {
-                    // get the data-filter-btn value of the clicked tab button
+                    // Get the value of the filter button that was clicked
                     const filterValue = this.getAttribute('data-filter-btn');
 
                     // remove the active class from the previous tab button
@@ -104,7 +102,7 @@ export default function Pricing() {
                         <li data-filter="shaving">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-1.jpg" width={90} height={90}  className="img-cover" alt="img"/>
+                                    <img src="./images/pricing-1.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Hair Cutting &amp; Fitting</h3>
@@ -116,7 +114,7 @@ export default function Pricing() {
                         <li data-filter="shaving">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-2.jpg" width={90} height={90}  className="img-cover" alt="img"/>
+                                    <img src="./images/pricing-2.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Shaving &amp; Facial</h3>
@@ -128,7 +126,7 @@ export default function Pricing() {
                         <li data-filter="face-washing">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-3.jpg" width={90} height={90}  className="img-cover" alt="img"/>
+                                    <img src="./images/pricing-3.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Hair Color &amp; Wash</h3>
@@ -140,7 +138,7 @@ export default function Pricing() {
                         <li data-filter="body-treatments">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-4.jpg" width={90} height={90}  className="img-cover" alt="img"/>
+                                    <img src="./images/pricing-4.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Body Massage</h3>
@@ -152,7 +150,7 @@ export default function Pricing() {
                         <li data-filter="beauty-spa">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-5.jpg" width={90} height={90}  className="img-cover" alt="img"/>
+                                    <img src="./images/pricing-5.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Beauty &amp; Spa</h3>
@@ -164,7 +162,7 @@ export default function Pricing() {
                         <li data-filter="face-washing">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-6.jpg" width={90} height={90}  className="img-cover" alt="img" />
+                                    <img src="./images/pricing-6.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Facial &amp; Face Wash</h3>
@@ -176,7 +174,7 @@ export default function Pricing() {
                         <li data-filter="body-treatments">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-7.jpg" width={90} height={90}  className="img-cover" alt="img" />
+                                    <img src="./images/pricing-7.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Backbone Massage</h3>
@@ -188,7 +186,7 @@ export default function Pricing() {
                         <li data-filter="meditations">
                             <div className="pricing-card">
                                 <figure className="card-banner img-holder" style={{ width: 90, height: 90 }}>
-                                    <img src="./images/pricing-8.jpg" width={90} height={90}  className="img-cover"  alt="img"/>
+                                    <img src="./images/pricing-8.jpg" width={90} height={90} className="img-cover" alt="img" />
                                 </figure>
                                 <div className="wrapper">
                                     <h3 className="h3 card-title">Meditation &amp; Massage</h3>

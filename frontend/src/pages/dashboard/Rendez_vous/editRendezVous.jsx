@@ -143,7 +143,7 @@ export default function EditRendezVous(props) {
                                                         <select data-te-select-init style={{ width: '100%' }}
                                                             name="service"
                                                             onChange={handleChange}
-                                                            value={rendezvous.service._id}
+                                                            value={rendezvous.service?._id}
                                                         >
                                                             <option value="service" selected disabled>Service</option>
                                                             {

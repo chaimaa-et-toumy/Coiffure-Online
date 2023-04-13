@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from '../../component/navBar'
 import { BsFillMenuButtonWideFill, BsFillChatQuoteFill, BsCalendar2Month, BsFillPeopleFill } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Api from '../../Utils/Api'
 
@@ -58,7 +58,7 @@ export default function Dashboard() {
                 <div className="grid grid-cols-12 gap-4">
 
                   <div className="col-span-12 sm:col-span-6 md:col-span-3">
-                    <Link to="/users">
+                    <Link to="users">
                       <div className="flex flex-row bg-white shadow-sm rounded p-4">
                         <div className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-green-100 text-green-500">
                           <BsFillPeopleFill size={22} />
@@ -72,7 +72,7 @@ export default function Dashboard() {
                     </Link>
                   </div>
                   <div className="col-span-12 sm:col-span-6 md:col-span-3">
-                    <Link to="/service">
+                    <Link to="service">
                       <div className="flex flex-row bg-white shadow-sm rounded p-4">
                         <div className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-orange-100 text-orange-500">
                           <BsFillMenuButtonWideFill size={22} />
@@ -85,7 +85,7 @@ export default function Dashboard() {
                     </Link>
                   </div>
                   <div className="col-span-12 sm:col-span-6 md:col-span-3">
-                    <Link to="/rendez-vous">
+                    <Link to="rendez-vous">
                       <div className="flex flex-row bg-white shadow-sm rounded p-4">
                         <div className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-violet-100 text-violet-500">
                           <BsCalendar2Month size={22} />
@@ -98,7 +98,7 @@ export default function Dashboard() {
                     </Link>
                   </div>
                   <div className="col-span-12 sm:col-span-6 md:col-span-3">
-                    <Link to="/commentaire">
+                    <Link to="commentaire">
                       <div className="flex flex-row bg-white shadow-sm rounded p-4">
                         <div className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-blue-100 text-blue-500">
                           <BsFillChatQuoteFill size={22} />
@@ -113,6 +113,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+            <Outlet />
           </div>
         </main>
       </div>

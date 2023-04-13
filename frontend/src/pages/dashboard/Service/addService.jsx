@@ -20,7 +20,7 @@ export default function AddService(props) {
 
     const handleChange = (e) => {
         setService({ ...service, [e.target.name]: e.target.value });
-        console.log(service)
+        // console.log(service)
     };
 
     const handleSubmit = (e) => {

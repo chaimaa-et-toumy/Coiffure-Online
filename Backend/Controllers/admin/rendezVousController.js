@@ -9,9 +9,7 @@ const ClientModel = require('../../Models/UserModel')
 const AddRendezVous = async (req, res) => {
     const { Date, Heure, service, client, phone } = req.body;
 
-    console.log(req.body)
-
-    if (!Date || !Heure || !service || !client || !phone) {
+    if (!Date || !Heure || !service || !client) {
         return res.status(400).send("all fields are required")
     }
 

@@ -79,7 +79,7 @@ export default function Rendez_vous() {
                                     rendezvous.map((data, index) => {
 
                                         return (
-                                            <tr  key={data._id} className="hover:bg-gray-50">
+                                            <tr className="hover:bg-gray-50">
                                                 <td className="px-6 py-4">
                                                     <span>{data.client?.fullName}</span>
                                                 </td>

@@ -67,7 +67,7 @@ export default function Commantaire() {
                                                     <span>{Commente.Review}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span>{Commente.service.Nom}</span>
+                                                    <span>{Commente.service?.Nom}</span>
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span>{Commente.date.split('T')[0]}</span>
